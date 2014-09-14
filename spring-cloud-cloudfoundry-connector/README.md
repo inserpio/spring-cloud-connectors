@@ -8,6 +8,7 @@ It currently knows about:
 - Oracle
 - Redis
 - MongoDB
+- Neo4j
 - RabbitMQ
 - SMTP gateway
 - application monitoring (New Relic)

@@ -34,4 +34,7 @@ dependencies {
     exclude(group: 'org.springframework', module: 'spring-expression')
     exclude(group: 'org.springframework', module: 'spring-tx')
   }
+  
+  optional("org.springframework.data:spring-data-neo4j:$springDataNeo4jVersion")
+  optional("org.springframework.data:spring-data-neo4j-rest:$springDataNeo4jVersion")
 }

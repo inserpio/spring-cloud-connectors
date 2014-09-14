@@ -19,6 +19,7 @@ ext {
     springAmqpVersion = "1.0.0.RELEASE"
     springDataRedisVersion = "1.1.1.RELEASE"
     springDataMongoVersion = "1.2.4.RELEASE"
+    springDataNeo4jVersion = "3.2.0.RELEASE"
     
     jedisVersion = "2.1.0"
 

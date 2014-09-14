@@ -47,7 +47,7 @@ public abstract class AbstractCloudConnector<SD> implements CloudConnector {
 		serviceInfoCreators.add(serviceInfoCreator);
 	}
 
-	@SuppressWarnings({"unchecked", "rawtypes"})
+	@SuppressWarnings({"rawtypes"})
 	private void scanServiceInfoCreators(Class<? extends ServiceInfoCreator<? extends ServiceInfo,?>> serviceInfoCreatorClass) {
 		ServiceLoader<? extends ServiceInfoCreator> serviceInfoCreators = ServiceLoader.load(serviceInfoCreatorClass);
 		for (ServiceInfoCreator<? extends ServiceInfo,SD> serviceInfoCreator : serviceInfoCreators) {

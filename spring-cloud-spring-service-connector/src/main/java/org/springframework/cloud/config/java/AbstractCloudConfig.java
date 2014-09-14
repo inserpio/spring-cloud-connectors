@@ -4,6 +4,7 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import org.neo4j.graphdb.GraphDatabaseService;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
@@ -15,6 +16,7 @@ import org.springframework.cloud.CloudException;
 import org.springframework.cloud.CloudFactory;
 import org.springframework.cloud.service.PooledServiceConnectorConfig;
 import org.springframework.cloud.service.document.MongoDbFactoryConfig;
+import org.springframework.cloud.service.graph.Neo4jGraphDatabaseServiceConfig;
 import org.springframework.cloud.service.messaging.RabbitConnectionFactoryConfig;
 import org.springframework.cloud.service.relational.DataSourceConfig;
 import org.springframework.context.annotation.Bean;
@@ -355,6 +357,69 @@ public abstract class AbstractCloudConfig implements BeanFactoryAware {
             return cloud.getServiceConnector(serviceId, RedisConnectionFactory.class, redisConnectionFactoryConfig);
         }
 
+        // Neo4j
+        /**
+         * Get the {@link GraphDatabaseService} object associated with the only neo4j service bound to the app.
+         *
+         * This is equivalent to the {@code <cloud:neo4j-graph-database-service/>} element.
+         *
+         * @return 
+         * @throws CloudException
+         *             if there are either 0 or more than 1 neo4j graph database services.
+         */
+        public GraphDatabaseService graphDatabaseService() {
+            return graphDatabaseService((Neo4jGraphDatabaseServiceConfig) null);
+        }
+
+        /**
+         * Get the {@link GraphDatabaseService} object associated with the only neo4j service bound to the app
+         * configured as specified.
+         *
+         * This is equivalent to the {@code <cloud:neo4j-graph-database-service>} element with a nested {@code <cloud:neo4j-options>} element.
+         *
+         * @param neo4jGraphDatabaseServiceConfig
+         *            configuration for the neo4j GraphDatabaseService created
+         * @return graph database service
+         * @throws CloudException
+         *             if there are either 0 or more than 1 neo4j graph database services.
+         */
+        public GraphDatabaseService graphDatabaseService(Neo4jGraphDatabaseServiceConfig neo4jGraphDatabaseServiceConfig) {
+            return cloud.getSingletonServiceConnector(GraphDatabaseService.class, neo4jGraphDatabaseServiceConfig);
+        }
+
+        /**
+         * Get the {@link GraphDatabaseService} object for the specified neo4j service.
+         *
+         * This is equivalent to the {@code <cloud:neo4j-graph-database-service service-id="serviceId">} element.
+         *
+         * @param serviceId
+         *            the name of the service
+         * @return graph database service
+         * @throws CloudException
+         *             if the specified service doesn't exist
+         */
+        public GraphDatabaseService graphDatabaseService(String serviceId) {
+            return graphDatabaseService(serviceId, null);
+        }
+
+        /**
+         * Get the {@link GraphDatabaseService} object for the specified neo4j service configured as specified.
+         *
+         * This is equivalent to the {@code <cloud:neo4j-graph-database-service service-id="serviceId">} element
+         * with a nested {@code <cloud:neo4j-options>} element.
+         *
+         * @param serviceId
+         *            the name of the service
+         * @param neo4jGraphDatabaseServiceConfig
+         *            configuration for the neo4j GraphDatabaseService created
+         * @return graph database service
+         * @throws CloudException
+         *             if the specified service doesn't exist
+         */
+        public GraphDatabaseService graphDatabaseService(String serviceId, Neo4jGraphDatabaseServiceConfig neo4jGraphDatabaseServiceConfig) {
+            return cloud.getServiceConnector(serviceId, GraphDatabaseService.class, neo4jGraphDatabaseServiceConfig);
+        }
+        
         // Generic service
         /**
          * Get the service connector object associated with the only service bound to the app.
